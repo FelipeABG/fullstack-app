@@ -4,7 +4,7 @@ export default function App() {
   let [data, set_data] = useState([]);
 
   useEffect(() => {
-    fetch("https://jsonplaceholder.typicode.com/users")
+    fetch("http://localhost:8000/users")
       .then((response) => response.json())
       .then((data) => set_data(data));
   }, []);
