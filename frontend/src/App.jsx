@@ -1,19 +1,22 @@
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
+import { useState } from "react";
 
-export default function App() {
-   let [data, set_data] = useState([]);
+function App() {
+   let [users, setUsers] = useState([]);
 
    useEffect(() => {
       fetch("http://localhost:8000/users")
          .then((response) => response.json())
-         .then((data) => set_data(data));
+         .then((users) => setUsers(users));
    }, []);
 
    return (
-      <div>
-         {data.map((user) => (
-            <p>{user.name}</p>
-         ))}
+      <div className="h-screen w-screen flex flex-col items-center justify-center">
+         {users.map((user) => {
+            return <div>{user.name}</div>;
+         })}
       </div>
    );
 }
+
+export default App;
