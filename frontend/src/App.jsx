@@ -1,20 +1,13 @@
-import { useEffect } from "react";
-import { useState } from "react";
-
+import ListUser from "./ListUser";
 function App() {
-   let [users, setUsers] = useState([]);
-
-   useEffect(() => {
-      fetch("http://localhost:8000/users")
-         .then((response) => response.json())
-         .then((users) => setUsers(users));
-   }, []);
-
    return (
-      <div className="h-screen w-screen flex flex-col items-center justify-center">
-         {users.map((user) => {
-            return <div>{user.name}</div>;
-         })}
+      <div className="h-screen w-screen bg-[#eaeaea] flex flex-col">
+         <header className="h-[8vh] border text-[3rem] grid grid-cols-2 ">
+            <h1 className="place-self-center">CRUD Application</h1>
+         </header>
+         <main className="h-[92vh] w-screen grid grid-rows-2 grid-cols-2">
+            <ListUser />
+         </main>
       </div>
    );
 }

@@ -8,3 +8,13 @@ export function get_users(_, res) {
       return res.status(200).json(data);
    });
 }
+
+export function delete_user(req, res) {
+   console.log(req.params);
+   const query = `delete from users where id=${req.params.userID};`;
+
+   db.query(query, (err, data) => {
+      if (err) return res.json(err);
+      return res.status(200).json(data);
+   });
+}
