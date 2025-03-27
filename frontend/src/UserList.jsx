@@ -1,14 +1,14 @@
 import { useState } from "react";
 import { useEffect } from "react";
 
-export default function ListUser() {
+export default function UserList() {
    let [users, setUsers] = useState([]);
 
    useEffect(() => {
       fetch("http://localhost:8000/users")
          .then((response) => response.json())
          .then((users) => setUsers(users));
-   }, [users]);
+   }, []);
 
    let deleteUser = (id) => () => {
       fetch(`http://localhost:8000/users/${id}`, {

@@ -1,4 +1,4 @@
-import ListUser from "./ListUser";
+import UserList from "./UserList";
 function App() {
    return (
       <div className="h-screen w-screen bg-[#eaeaea] flex flex-col">
@@ -6,7 +6,7 @@ function App() {
             <h1 className="place-self-center">CRUD Application</h1>
          </header>
          <main className="h-[92vh] w-screen grid grid-rows-2 grid-cols-2">
-            <ListUser />
+            <UserList />
          </main>
       </div>
    );
