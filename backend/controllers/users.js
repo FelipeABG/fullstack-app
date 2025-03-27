@@ -10,7 +10,6 @@ export function get_users(_, res) {
 }
 
 export function delete_user(req, res) {
-   console.log(req.params);
    const query = `delete from users where id=${req.params.userID};`;
 
    db.query(query, (err, data) => {
