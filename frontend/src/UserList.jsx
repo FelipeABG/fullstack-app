@@ -21,12 +21,9 @@ export default function UserList() {
    };
 
    return (
-      <div className="h-[95%] w-[75%] place-self-center rounded-md row-span-2 shadow-md bg-[#f7f7f7] cursor-default overflow-scroll">
+      <div className="h-[95%] w-[75%] place-self-center rounded-md shadow-md row-span-2 bg-[#f7f7f7] cursor-default overflow-scroll">
          <div className="h-[8%] border-b grid grid-cols-4">
-            <div className="place-self-center font-bold underline">ID</div>
-            <div className="place-self-center font-bold underline">NAME</div>
-            <div className="place-self-center font-bold underline">EMAIL</div>
-            <div className="place-self-center font-bold underline">DELETE</div>
+            <UserPropsTitles />
          </div>
          {users.map((user) => {
             return <UserRow key={user.id} user={user} handler={deleteUser} />;
@@ -35,12 +32,22 @@ export default function UserList() {
    );
 }
 
+function UserPropsTitles() {
+   return ["ID", "NAME", "EMAIl", "DELETE"].map((title) => {
+      return (
+         <div key={title} className="place-self-center font-bold underline">
+            {title}
+         </div>
+      );
+   });
+}
+
 function UserRow({ user, handler }) {
    return (
       <div className="h-[8%] border-b grid grid-cols-4 hover:bg-[#cccccc] gap-[5px]">
          <div className="place-self-center">{user.id}</div>
-         <div className="place-self-center">{user.name}</div>
-         <div className="place-self-center ">{user.email}</div>
+         <div className="place-self-center w-full truncate">{user.name}</div>
+         <div className="place-self-center w-full truncate">{user.email}</div>
          <button
             type="button"
             className="place-self-center w-[70%] h-[60%] border rounded-md bg-[#db3445] text-white hover:bg-[#a70000]"
