@@ -1,14 +1,11 @@
-import { useState } from "react";
 import { useEffect } from "react";
 
-export default function UserList() {
-   let [users, setUsers] = useState([]);
-
+export default function UserList({ users, setUsers, setEditUser }) {
    useEffect(() => {
       fetch("http://localhost:8000/users")
          .then((response) => response.json())
          .then((users) => setUsers(users));
-   }, []);
+   }, [users, setUsers]);
 
    let deleteUser = (id) => () => {
       fetch(`http://localhost:8000/users/${id}`, {
@@ -26,7 +23,14 @@ export default function UserList() {
             <UserPropsTitles />
          </div>
          {users.map((user) => {
-            return <UserRow key={user.id} user={user} handler={deleteUser} />;
+            return (
+               <UserRow
+                  key={user.id}
+                  user={user}
+                  handler={deleteUser}
+                  setEditUser={setEditUser}
+               />
+            );
          })}
       </div>
    );
@@ -42,9 +46,16 @@ function UserPropsTitles() {
    });
 }
 
-function UserRow({ user, handler }) {
+function UserRow({ user, handler, setEditUser }) {
+   let handleUserEdit = (user) => () => {
+      setEditUser(user);
+   };
+
    return (
-      <div className="h-[8%] border-b grid grid-cols-4 hover:bg-[#cccccc] gap-[5px]">
+      <div
+         className="h-[8%] border-b grid grid-cols-4 hover:bg-[#cccccc] gap-[5px]"
+         onClick={handleUserEdit(user)}
+      >
          <div className="place-self-center">{user.id}</div>
          <div className="place-self-center w-full truncate">{user.name}</div>
          <div className="place-self-center w-full truncate">{user.email}</div>
