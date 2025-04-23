@@ -1,26 +1,39 @@
-import UserList from "./UserList";
-import UserCreation from "./UserCreation";
-import UserEdition from "./UserEdition";
 import { useState } from "react";
+import { ListPage } from "./pages/ListPage";
+import { ViewPage } from "./pages/ViewPage";
+import { EditPage } from "./pages/EditPage";
 
 function App() {
-   let [users, setUsers] = useState([]);
-   let [editUser, setEditUser] = useState(null);
+   let pages = [
+      { name: "List", handler: ListPage },
+      { name: "Edit", handler: EditPage },
+      { name: "View", handler: ViewPage },
+   ];
+
+   let [page, setPage] = useState(pages[0].handler);
+
+   let renderPage = (page) => () => {
+      setPage(page);
+   };
 
    return (
-      <div className="h-screen w-screen bg-[#eaeaea] flex flex-col">
-         <header className="h-[8vh] border-b text-[3rem] grid grid-cols-2 ">
-            <h1 className="place-self-center">CRUD Application</h1>
+      <div className="w-screen h-screen">
+         <header className="w-screen h-[7vh] border-b flex justify-around align-center items-center gap-[50vw]">
+            <h1 className="self-center text-[1.7rem]">Felipe Augusto</h1>
+            <div className="flex gap-[2vw] text-[1.2rem]">
+               {pages.map((page) => {
+                  return (
+                     <button
+                        className="hover:underline"
+                        onClick={renderPage(page.handler)}
+                     >
+                        {page.name}
+                     </button>
+                  );
+               })}
+            </div>
          </header>
-         <main className="h-[92vh] w-screen grid grid-rows-2 grid-cols-2">
-            <UserList
-               users={users}
-               setUsers={setUsers}
-               setEditUser={setEditUser}
-            />
-            <UserCreation setUsers={setUsers} />
-            <UserEdition editUser={editUser} setEditUser={setEditUser} />
-         </main>
+         <main>{page}</main>
       </div>
    );
 }
