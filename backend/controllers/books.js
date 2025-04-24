@@ -10,7 +10,7 @@ export function get_books(_, res) {
 }
 
 export function delete_books(req, res) {
-   const query = `delete from users where id=${req.params.userID};`;
+   const query = `delete from books where id=${req.params.bookid};`;
 
    db.query(query, (err, data) => {
       if (err) return res.json(err);

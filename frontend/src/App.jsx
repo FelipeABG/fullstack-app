@@ -1,9 +1,18 @@
 import { BrowserRouter as Router, Routes, Route, Link } from "react-router-dom";
+import { useState, useEffect } from "react";
 import { ListPage } from "./pages/ListPage";
 import { ViewPage } from "./pages/ViewPage";
 import { EditPage } from "./pages/EditPage";
 
 function App() {
+   const [books, setBooks] = useState([]);
+
+   useEffect(() => {
+      fetch("http://localhost:8000/books")
+         .then((response) => response.json())
+         .then((response) => setBooks(response));
+   }, []);
+
    return (
       <Router>
          <div className="w-screen h-screen bg-[#fcf4e5] text-[#453024]">
@@ -25,8 +34,14 @@ function App() {
             </header>
             <main className="h-[93vh]">
                <Routes>
-                  <Route path="/" element={<ListPage />} />
-                  <Route path="/edit" element={<EditPage />} />
+                  <Route
+                     path="/"
+                     element={<ListPage books={books} setBooks={setBooks} />}
+                  />
+                  <Route
+                     path="/edit"
+                     element={<EditPage books={books} setBooks={setBooks} />}
+                  />
                   <Route path="/view" element={<ViewPage />} />
                </Routes>
             </main>
