@@ -64,7 +64,7 @@ export function post_books(req, res) {
    const errors = validateBook(req.body);
    if (errors.length > 0) return res.status(400).json({ errors });
 
-   const query =
+   const insertQuery =
       "INSERT INTO books (title, author, genre, published_year, pages) VALUES (?, ?, ?, ?, ?)";
 
    const values = [
@@ -75,9 +75,16 @@ export function post_books(req, res) {
       req.body.pages,
    ];
 
-   db.query(query, values, (err, data) => {
+   db.query(insertQuery, values, (err, result) => {
       if (err) return res.status(500).json(err);
-      return res.status(201).json(data);
+
+      const newBookId = result.insertId;
+      const selectQuery = "SELECT * FROM books WHERE id = ?";
+
+      db.query(selectQuery, [newBookId], (err, rows) => {
+         if (err) return res.status(500).json(err);
+         return res.status(201).json(rows[0]);
+      });
    });
 }
 

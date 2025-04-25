@@ -22,8 +22,9 @@ export function EditPage({ books, setBooks, bookEdit, setBookEdit }) {
          });
 
          if (response.status === 201) {
+            const createdBook = await response.json();
             form.reset();
-            setBooks((prev) => [...prev, newBook]);
+            setBooks((prev) => [...prev, createdBook]);
          } else {
             const result = await response.json();
             alert(
@@ -41,6 +42,7 @@ export function EditPage({ books, setBooks, bookEdit, setBookEdit }) {
       const form = e.target;
 
       const updatedBook = {
+         id: bookEdit.id,
          title: form.title.value,
          author: form.author.value,
          genre: form.genre.value,
