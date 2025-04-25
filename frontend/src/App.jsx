@@ -20,7 +20,7 @@ function App() {
          .catch((err) => {
             alert("Error loading books: " + err.message);
          });
-   }, [books]);
+   }, []);
 
    return (
       <Router>

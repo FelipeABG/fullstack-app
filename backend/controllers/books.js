@@ -1,6 +1,5 @@
 import db from "../db.js";
 
-// Helper: Validate book data
 function validateBook(book) {
    const errors = [];
 
@@ -21,9 +20,9 @@ function validateBook(book) {
    }
 
    if (
-      book.published === undefined ||
-      !Number.isInteger(book.published) ||
-      book.published <= 0
+      book.published_year === undefined ||
+      !Number.isInteger(book.published_year) ||
+      book.published_year <= 0
    ) {
       errors.push("Invalid or missing 'published_year'");
    }
@@ -72,7 +71,7 @@ export function post_books(req, res) {
       req.body.title,
       req.body.author,
       req.body.genre,
-      req.body.published,
+      req.body.published_year,
       req.body.pages,
    ];
 
@@ -96,11 +95,12 @@ export function put_books(req, res) {
       SET title = ?, author = ?, genre = ?, published_year = ?, pages = ?
       WHERE id = ?
    `;
+
    const values = [
       req.body.title,
       req.body.author,
       req.body.genre,
-      req.body.published,
+      req.body.published_year,
       req.body.pages,
       bookid,
    ];
