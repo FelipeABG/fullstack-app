@@ -1,37 +1,112 @@
 import db from "../db.js";
 
+// Helper: Validate book data
+function validateBook(book) {
+   const errors = [];
+
+   if (!book.title || typeof book.title != "string" || book.title.length > 70) {
+      errors.push("Invalid or missing 'title'");
+   }
+
+   if (
+      !book.author ||
+      typeof book.author != "string" ||
+      book.author.length > 70
+   ) {
+      errors.push("Invalid or missing 'author'");
+   }
+
+   if (!book.genre || typeof book.genre != "string" || book.genre.length > 50) {
+      errors.push("Invalid or missing 'genre'");
+   }
+
+   if (
+      book.published === undefined ||
+      !Number.isInteger(book.published) ||
+      book.published <= 0
+   ) {
+      errors.push("Invalid or missing 'published_year'");
+   }
+
+   if (
+      book.pages === undefined ||
+      !Number.isInteger(book.pages) ||
+      book.pages <= 0
+   ) {
+      errors.push("Invalid or missing 'pages'");
+   }
+
+   return errors;
+}
+
 export function get_books(_, res) {
-   const query = "select * from books;";
+   const query = "SELECT * FROM books;";
 
    db.query(query, (err, data) => {
-      if (err) return res.json(err);
+      if (err) return res.status(500).json(err);
       return res.status(200).json(data);
    });
 }
 
 export function delete_books(req, res) {
-   const query = `delete from books where id=${req.params.bookid};`;
+   const bookid = parseInt(req.params.bookid);
 
-   db.query(query, (err, data) => {
-      if (err) return res.json(err);
+   if (!Number.isInteger(bookid))
+      return res.status(400).json({ error: "Invalid book ID" });
+
+   const query = "DELETE FROM books WHERE id = ?";
+   db.query(query, [bookid], (err, data) => {
+      if (err) return res.status(500).json(err);
       return res.status(200).json(data);
    });
 }
 
 export function post_books(req, res) {
-   const query = `insert into books values (null, "${req.body.title}", "${req.body.author}", "${req.body.genre}", ${req.body.published}, ${req.body.pages});`;
+   const errors = validateBook(req.body);
+   if (errors.length > 0) return res.status(400).json({ errors });
 
-   db.query(query, (err, data) => {
-      if (err) return res.json(err);
-      return res.status(200).json(data);
+   const query =
+      "INSERT INTO books (title, author, genre, published_year, pages) VALUES (?, ?, ?, ?, ?)";
+
+   const values = [
+      req.body.title,
+      req.body.author,
+      req.body.genre,
+      req.body.published,
+      req.body.pages,
+   ];
+
+   db.query(query, values, (err, data) => {
+      if (err) return res.status(500).json(err);
+      return res.status(201).json(data);
    });
 }
 
 export function put_books(req, res) {
-   const query = `UPDATE users SET name = "${req.body.name}", email = "${req.body.email}" WHERE id = ${req.body.id};`;
+   const bookid = parseInt(req.params.bookid);
 
-   db.query(query, (err, data) => {
-      if (err) return res.json(err);
+   if (!Number.isInteger(bookid))
+      return res.status(400).json({ error: "Invalid book ID" });
+
+   const errors = validateBook(req.body);
+   if (errors.length > 0) return res.status(400).json({ errors });
+
+   const query = `
+      UPDATE books
+      SET title = ?, author = ?, genre = ?, published_year = ?, pages = ?
+      WHERE id = ?
+   `;
+   const values = [
+      req.body.title,
+      req.body.author,
+      req.body.genre,
+      req.body.published,
+      req.body.pages,
+      bookid,
+   ];
+
+   db.query(query, values, (err, data) => {
+      if (err) return res.status(500).json(err);
       return res.status(200).json(data);
    });
 }

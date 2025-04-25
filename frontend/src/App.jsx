@@ -1,16 +1,25 @@
+import { useEffect, useState } from "react";
 import { BrowserRouter as Router, Routes, Route, Link } from "react-router-dom";
-import { useState, useEffect } from "react";
 import { ListPage } from "./pages/ListPage";
-import { ViewPage } from "./pages/ViewPage";
 import { EditPage } from "./pages/EditPage";
+import { ViewPage } from "./pages/ViewPage";
 
 function App() {
    const [books, setBooks] = useState([]);
+   const [bookEdit, setBookEdit] = useState(null);
 
    useEffect(() => {
       fetch("http://localhost:8000/books")
-         .then((response) => response.json())
-         .then((response) => setBooks(response));
+         .then((response) => {
+            if (!response.ok) {
+               throw new Error("Failed to fetch books.");
+            }
+            return response.json();
+         })
+         .then((response) => setBooks(response))
+         .catch((err) => {
+            alert("Error loading books: " + err.message);
+         });
    }, [books]);
 
    return (
@@ -36,11 +45,24 @@ function App() {
                <Routes>
                   <Route
                      path="/"
-                     element={<ListPage books={books} setBooks={setBooks} />}
+                     element={
+                        <ListPage
+                           books={books}
+                           setBooks={setBooks}
+                           setBookEdit={setBookEdit}
+                        />
+                     }
                   />
                   <Route
                      path="/edit"
-                     element={<EditPage books={books} setBooks={setBooks} />}
+                     element={
+                        <EditPage
+                           books={books}
+                           setBooks={setBooks}
+                           bookEdit={bookEdit}
+                           setBookEdit={setBookEdit}
+                        />
+                     }
                   />
                   <Route path="/view" element={<ViewPage books={books} />} />
                </Routes>

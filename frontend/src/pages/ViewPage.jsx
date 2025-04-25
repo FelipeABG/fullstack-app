@@ -14,7 +14,8 @@ export function ViewPage({ books }) {
                      <span className="font-semibold">Genre:</span> {book.genre}
                   </p>
                   <p>
-                     <span className="font-semibold">Year:</span> {book.year}
+                     <span className="font-semibold">Year:</span>{" "}
+                     {book.published_year}
                   </p>
                   <p>
                      <span className="font-semibold">Pages:</span> {book.pages}
