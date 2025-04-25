@@ -57,6 +57,22 @@ This will:
 - Create a `books` table with the necessary schema
 - Import 30 sample book entries with various titles, authors, genres, publication years, and page counts
 
+If that does not work, here is the schema:
+
+```sql
+    DROP DATABASE IF EXISTS web;
+    CREATE DATABASE IF NOT EXISTS web;
+    use web;
+    CREATE TABLE books (
+        id INT AUTO_INCREMENT PRIMARY KEY,
+        title VARCHAR(70) NOT NULL,
+        author VARCHAR(70) NOT NULL,
+        genre VARCHAR(50),
+        published_year INT NOT NULL,
+        pages INT NOT NULL
+    );
+```
+
 3. Configure your database connection in the `backend/db.js` file (update credentials as needed)
 
 ### 4. Run the Application
