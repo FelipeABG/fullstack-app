@@ -2,13 +2,30 @@ import { BooksList } from "../components/BooksList";
 import { Input } from "../components/Input";
 
 export function EditPage({ books, setBooks }) {
+   const createBook = (e) => {
+      e.preventDefault();
+      let data = new FormData(e.target);
+
+      fetch("http://localhost:8000/books", { method: "POST", body: data }).then(
+         (response) => {
+            if (response.status === 200) {
+               e.target.reset();
+               setBooks([]);
+            }
+         },
+      );
+   };
+
    return (
       <div className="flex flex-row gap-[20px]">
          <BooksList books={books} setBooks={setBooks} />
          <div className="flex flex-1 flex-col justify-center items-center">
             <div className="text-[2rem] font-bold">Edit Book</div>
             <div className="w-full h-full flex justify-center items-center">
-               <form className="w-[30vw] h-[80vh] rounded-lg border-2 border-[#dec8ac] overflow-scroll p-8 flex flex-col gap-4 bg-[#fefaf3]">
+               <form
+                  className=" w-[30vw] h-[80vh] rounded-lg border-2 border-[#dec8ac] overflow-scroll p-8 flex flex-col gap-4 bg-[#fefaf3]"
+                  onSubmit={createBook}
+               >
                   <Input type="text" name="title" title="Title" />
                   <Input type="text" name="author" title="Author" />
                   <Input type="text" name="genre" title="Genre" />

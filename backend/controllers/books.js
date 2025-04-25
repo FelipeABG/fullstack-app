@@ -19,7 +19,7 @@ export function delete_books(req, res) {
 }
 
 export function post_books(req, res) {
-   const query = `insert into users values (null, "${req.body.name}", "${req.body.email}");`;
+   const query = `insert into books values (null, "${req.body.title}", "${req.body.author}", "${req.body.genre}", ${req.body.published}, ${req.body.pages});`;
 
    db.query(query, (err, data) => {
       if (err) return res.json(err);

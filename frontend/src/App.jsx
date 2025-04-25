@@ -11,7 +11,7 @@ function App() {
       fetch("http://localhost:8000/books")
          .then((response) => response.json())
          .then((response) => setBooks(response));
-   }, []);
+   }, [books]);
 
    return (
       <Router>
@@ -42,7 +42,7 @@ function App() {
                      path="/edit"
                      element={<EditPage books={books} setBooks={setBooks} />}
                   />
-                  <Route path="/view" element={<ViewPage />} />
+                  <Route path="/view" element={<ViewPage books={books} />} />
                </Routes>
             </main>
          </div>

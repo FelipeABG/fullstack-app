@@ -19,7 +19,7 @@ export function BooksList({ books, setBooks }) {
                <div className="font-bold px-4 py-2">Published</div>
             </div>
             {books.map((book) => (
-               <div className="grid grid-cols-4 w-full h-[7vh] border-b border-[#dec8ac] items-center text-[#273b53] bg-[#fefaf3]">
+               <div className="grid grid-cols-4 w-full h-[7vh] hover:bg-[#dec8ac] border-b border-[#dec8ac] items-center text-[#273b53] bg-[#fefaf3] cursor-default">
                   <div className="truncate px-4" title={book.title}>
                      {book.title}
                   </div>
